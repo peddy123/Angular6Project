@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -35,8 +37,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     ]),
     AppRoutingModule,
     ReactiveFormsModule
+    
+    
   ],
-  providers: [],
+  providers: [FormBuilder, Validators],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

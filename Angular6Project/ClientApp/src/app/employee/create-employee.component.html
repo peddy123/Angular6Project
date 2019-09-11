@@ -1,4 +1,4 @@
-<form class="form-horizontal" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+<form class="form-horizontal .was-validated" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
   <div class="card card-primary">
     <div class="card-heading bg-primary text-white">
       <h3 class="card-title">Create Employee</h3>
@@ -7,29 +7,41 @@
       <div class="form-group row">
         <label class="col-sm-2 control-label text-bold" for="fullName">Full Name</label>
         <div class="col-sm-8">
-          <input id="fullName" type="text" class="form-control" formControlName="fullName">
+          <input id="fullName" type="text" class="form-control " formControlName="fullName" [ngClass]="{ 'is-invalid': formErrors.fullName}" (blur)="logValidationErrors()"/>
+          <div *ngIf="formErrors.fullName" class="invalid-feedback">
+            <div *ngIf="formErrors.fullName"> {{formErrors.fullName}}</div>
+          </div>
         </div>
       </div>
 
       <div class="form-group row">
-        <label class="col-sm-2 control-label" for="email">Email</label>
+        <label class="col-sm-2 control-label" for="email" >Email</label>
         <div class="col-sm-8">
-          <input id="email" type="text" class="form-control" formControlName="email">
+          <input id="email" type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': formErrors.email}" (blur)="logValidationErrors()"/>
+          <div *ngIf="formErrors.email" class="invalid-feedback">
+            <div *ngIf="formErrors.email"> {{formErrors.email}}</div>
+          </div>
         </div>
       </div>
-      <div formGroupName="skills">
 
+      <div formGroupName="skills">
         <div class="form-group row">
           <label class="col-sm-2 control-label" for="skillName">
             Skill
           </label>
           <div class="col-sm-4">
             <input type="text" class="form-control" id="skillName"
-                   placeholder="Name" formControlName="skillName">
+                   placeholder="Name" formControlName="skillName" [ngClass]="{ 'is-invalid': formErrors.skillName}" (blur)="logValidationErrors()"/>
+          <div *ngIf="formErrors.skillName" class="invalid-feedback">
+            <div *ngIf="formErrors.skillName"> {{formErrors.skillName}}</div>
+          </div>
           </div>
           <div class="col-sm-4">
             <input type="text" placeholder="Experience in Years"
-                   class="form-control" formControlName="experienceInYears">
+                   class="form-control" formControlName="experienceInYears" [ngClass]="{ 'is-invalid': formErrors.experienceInYears}" (blur)="logValidationErrors()"/>
+          <div *ngIf="formErrors.experienceInYears" class="invalid-feedback">
+            <div *ngIf="formErrors.experienceInYears"> {{formErrors.experienceInYears}}</div>
+          </div>
           </div>
         </div>
 
@@ -68,9 +80,9 @@
         </button>
       </div>
     </div>
-    </div>
+  </div>
 </form>
-<table border="1">
+<!--<table border="1">
   <tr>
     <th style="padding: 10px">FormGroup</th>
     <th style="padding: 10px">FormControl (fullName)</th>
@@ -89,4 +101,4 @@
       <br /> FullName Value : {{employeeForm.get('fullName').value}}
     </td>
   </tr>
-</table>
+</table>-->
