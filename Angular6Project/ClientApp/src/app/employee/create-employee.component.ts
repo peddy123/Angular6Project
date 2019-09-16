@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-create-employee',
@@ -13,14 +13,14 @@ export class CreateEmployeeComponent implements OnInit {
   // Notice, each key in this object has the same name as the
   // corresponding form control
   formErrors = {
-    'fullName': '',
-    'email': '',
-    'confirmEmail': '',
-    'emailGroup': '',
-    'phone': '',
-    'skillName': '',
-    'experienceInYears': '',
-    'proficiency': ''
+    //'fullName': '',
+    //'email': '',
+    //'confirmEmail': '',
+    //'emailGroup': '',
+    //'phone': '',
+    //'skillName': '',
+    //'experienceInYears': '',
+    //'proficiency': ''
   };
 
   // This object contains all the validation messages for this form
@@ -43,12 +43,12 @@ export class CreateEmployeeComponent implements OnInit {
     'phone': {
       'required': 'Phone is required.'
     },
-    'skillName': {
-      'required': 'Skill Name is required.',
-    },
-    'experienceInYears': {
-      'required': 'Experience is required.',
-    },
+    //'skillName': {
+    //  'required': 'Skill Name is required.',
+    //},
+    //'experienceInYears': {
+    //  'required': 'Experience is required.',
+    //},
     'proficiency': {
       'required': 'Proficiency is required.',
     },
@@ -60,25 +60,32 @@ export class CreateEmployeeComponent implements OnInit {
       emailGroup: this.fb.group({
         email: ['', [Validators.required, emailDomain('dell.com')]],
         confirmEmail: ['', [Validators.required]],
-      }, {validator: matchEmails }),
+      }, { validator: matchEmails }),
       phone: [''],
-      skills: this.fb.group({
-        skillName: ["", Validators.required],
-        experienceInYears: ["", Validators.required],
-        proficiency: ["", Validators.required]
-      })
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
     });
 
-    this.employeeForm.get('contactPreference')
-      .valueChanges.subscribe((data: string) => {
-        this.onContactPrefernceChange(data);
-      });
+  }
 
-    // When any of the form control value in employee form changes
-    // our validation function logValidationErrors() is called
-    this.employeeForm.valueChanges.subscribe((data) => {
-      this.logValidationErrors(this.employeeForm);
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
     });
+
+    //this.employeeForm.get('contactPreference')
+    //  .valueChanges.subscribe((data: string) => {
+    //    this.onContactPrefernceChange(data);
+    //  });
+
+    //// When any of the form control value in employee form changes
+    //// our validation function logValidationErrors() is called
+    //this.employeeForm.valueChanges.subscribe((data) => {
+    //  this.logValidationErrors(this.employeeForm);
+    //});
 
    
   }
@@ -136,11 +143,30 @@ export class CreateEmployeeComponent implements OnInit {
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
+      // We need this additional check to get to the FormGroup
+      // in the FormArray and then recursively call this
+      // logValidationErrors() method to fix the broken validation
+      //if (abstractControl instanceof FormArray) {
+      //  for (const control of abstractControl.controls) {
+      //    if (control instanceof FormGroup) {
+      //      this.logValidationErrors(control);
+      //    }
+      //  }
+      //}
+
     });
   }
   onLoadDataClick(): void {
     this.logValidationErrors(this.employeeForm);
     console.log(this.formErrors);
+  }
+
+  addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+
+  removeSkillButtonClick(skillGroupIndex: number): void {
+    (<FormArray>this.employeeForm.get('skills')).removeAt(skillGroupIndex);
   }
 }
 function emailDomain(domainName: string) {

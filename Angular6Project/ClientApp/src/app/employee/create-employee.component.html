@@ -67,54 +67,73 @@
         </div>
       </div>
       <!-- Skills Form-->
-      <div formGroupName="skills">
-        <!-- Skill Name -->
-        <div class="form-group row">
-          <label class="col-sm-2 control-label" for="skillName">
-            Skill
-          </label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="skillName"
-                   placeholder="Name" formControlName="skillName" [ngClass]="{ 'is-invalid': formErrors.skillName}" (blur)="logValidationErrors()" />
-            <div *ngIf="formErrors.skillName" class="invalid-feedback">
-              <div *ngIf="formErrors.skillName"> {{formErrors.skillName}}</div>
-            </div>
+      <div class="card card-body bg-light">
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-4">
+            <button type="button" class="btn btn-primary" (click)="addSkillButtonClick()"
+                    [disabled]="employeeForm.get('skills').invalid">
+              Add Skill
+            </button>
           </div>
-          <div class="col-sm-4">
-            <input type="text" placeholder="Experience in Years"
-                   class="form-control" formControlName="experienceInYears" [ngClass]="{ 'is-invalid': formErrors.experienceInYears}" (blur)="logValidationErrors()" />
-            <div *ngIf="formErrors.experienceInYears" class="invalid-feedback">
-              <div *ngIf="formErrors.experienceInYears"> {{formErrors.experienceInYears}}</div>
+        </div>
+        <div formArrayName="skills" *ngFor="let skill of employeeForm.get('skills').controls; let i = index">
+          <hr *ngIf="i>0">
+          <div [formGroupName]="i">
+            <!-- Skill Name -->
+            <div class="form-group row">
+              <label class="col-sm-2 control-label" attr.for="{{'skillName'+i}}">
+                Skill
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="{{'skillName'+i}}"
+                       placeholder="Name" formControlName="skillName" [ngClass]="{ 'is-invalid': skill.get('skillName').invalid && skill.get('skillName').touched}" (blur)="logValidationErrors()" />
+                <div *ngIf="skill.get('skillName').errors" class="invalid-feedback">
+                  Skill Name + i is required.
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" placeholder="Experience in Years" id="{{'experienceInYears'+i}}"
+                       class="form-control" formControlName="experienceInYears" [ngClass]="{ 'is-invalid': skill.get('experienceInYears').invalid && skill.get('experienceInYears').touched}" (blur)="logValidationErrors()" />
+                <div *ngIf="skill.get('experienceInYears').errors" class="invalid-feedback">
+                  experience + {{i}} is required.
+                </div>
+              </div>
+              <div class="col-sm-2" *ngIf="i>0">
+                <button type="button" class="btn btn-danger btn-sm pull-right"
+                        title="Delete Skill" (click)="removeSkillButtonClick(i)">
+                  <span class="fa fa-remove"></span>
+                </button>
+              </div>
+            </div>
+           
+            <!-- Proficiency -->
+            <div class="form-group row">
+              <label class="col-sm-2 control-label">Proficiency</label>
+              <div class="col-sm-8">
+                <div class="form-check-inline">
+                  <label class="form-check-label">
+                    <input id="proficiency" type="radio" value="beginner"
+                           formControlName="proficiency">Beginner
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label class="form-check-label">
+                    <input id="proficiency" type="radio" value="intermediate"
+                           formControlName="proficiency">Intermediate
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label class="form-check-label">
+                    <input id="proficiency" type="radio" value="advanced"
+                           formControlName="proficiency">Advanced
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- Proficiency -->
-        <div class="form-group row">
-          <label class="col-sm-2 control-label">Proficiency</label>
-          <div class="col-sm-8">
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input id="proficiency" type="radio" value="beginner"
-                       formControlName="proficiency">Beginner
-              </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input id="proficiency" type="radio" value="intermediate"
-                       formControlName="proficiency">Intermediate
-              </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label">
-                <input id="proficiency" type="radio" value="advanced"
-                       formControlName="proficiency">Advanced
-              </label>
-            </div>
-          </div>
         </div>
-
       </div>
-    </div>
     <div class="card-footer">
       <div>
         <button class="btn btn-primary" type="submit">Save</button>
@@ -126,7 +145,7 @@
     </div>
   </div>
 </form>
-<!--<table border="1">
+<table border="1">
   <tr>
     <th style="padding: 10px">FormGroup</th>
     <th style="padding: 10px">FormControl (fullName)</th>
@@ -145,4 +164,4 @@
       <br /> FullName Value : {{employeeForm.get('fullName').value}}
     </td>
   </tr>
-</table>-->
+</table>

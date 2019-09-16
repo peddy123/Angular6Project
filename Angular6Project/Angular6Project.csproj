@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,31 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-brands-400.eot" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-brands-400.ttf" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-brands-400.woff" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-regular-400.eot" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-regular-400.ttf" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-regular-400.woff" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-solid-900.eot" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-solid-900.ttf" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-solid-900.woff" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-brands-400.svg" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-brands-400.woff2" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-regular-400.svg" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-regular-400.woff2" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-solid-900.svg" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\fonts\fa-solid-900.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
